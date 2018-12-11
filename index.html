@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    body {font-family: "Arial", Times, serif;
+          border-style: ridge;
+          border-width: 1px;
+          width: 40%}
+    #discussion {
+      margin-top: 10px;
+    }
+    .cmt {
+      background-color:#ececec;
+    }
+  </style>
+
+</head>
+<body>
+
+<!-- Button trigger modal -->
+<button id = "createDiscussion" type="button" class="btn btn-primary btn-sm createDisc" data-toggle="modal" data-target="#myModal">
+  Create Discussion
+</button>
+
+<button id="comment" type="button" class="btn btn-primary btn-sm hidden">Comment
+</button>
+
+<div></div>
+<div id= "discussion">
+</div>
+<div id="cmtText" class="hidden"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Title</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Description:</label>
+            <textarea class="form-control" id="message-text" required></textarea>
+            <div id="emptyDesc" class="hidden">
+              <div class="alert alert-danger">
+                <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="createBtn" type="button" class="btn btn-primary">Ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  /*function Comment(name, text){
+    this.name = name;
+    this.text = text;
+    this.date = new Date();
+  }*/
+  $("#createBtn").on('click',function(e) {
+      let desc = $("#message-text").val();
+      if(!desc) {
+        $("#emptyDesc").removeClass('hidden');
+        throw new Error("Description can not be empty");
+      } else {
+        $("#discussion").html(desc);
+        $("#createBtn").attr("data-dismiss","modal");
+        $("#message-text").val("");
+        $("#createDiscussion").remove();
+        $("#comment").removeClass('hidden');
+      }
+    });
+  $("#createDiscussion").on('click',function(e) {
+    $("#emptyDesc").addClass('hidden');
+  });
+  $("#comment").on('click',function(e) {
+    $("#cmtText").removeClass('hidden');
+    let cmtBox = `<div id="cmt-box"><textarea id='cmtTextArea' class='form-control' rows='3' style='width:100%''></textarea><p></p><button id='post' type='button'
+     class='btn btn-primary btn-xs post'>Post</button>
+    <button id='cancel' type='button' class='btn btn-primary btn-xs cancel'>Cancel</button></div>`;
+    $("#cmtText").append(cmtBox);
+  });
+  $("#cmtText").on('click', '.post', function(e){
+    let text = $("#cmtTextArea").val();
+    let date = new Date();
+    let name = "<p style='font-weight:bold;color:#1f3d7a'>Naresh Vavilala</p>";
+
+    //let cmt = new Comment(name,text);
+    $("#cmtText").append(`<div class="cmt">${name}${text}</div>`);
+    $("#cmt-box").remove();
+  });
+  $("#cmtText").on('click', '.cancel', function(e){
+    $("#cmt-box").remove();
+  });
+})();
+
+</script>
+
+</body>
+</html>
